@@ -16,6 +16,8 @@ public class ListViewer {
     }
 
     public void display() {
+        //viewableList 里包含了 News 和 NewsWithRelated
+        //如果要分别调用它们的display函数,就可以如下遍历
         for (Viewable viewableItem : viewableList) {
             System.out.println("-----------------------------------------------");
             viewableItem.display();

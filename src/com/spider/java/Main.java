@@ -34,10 +34,11 @@ public class Main {
         NewsFactory newsReader = new NewsFactory(resource_path);
         ArrayList<News> newsList = newsReader.fetch();
 
+        //类型转换
         ArrayList<Viewable> viewableList =new ArrayList<Viewable>();
         viewableList.addAll(newsList);
 
-        /**
+        /*
          * 创建类NewsListViewer
          * 拿到文件内容
          * 进行输出到终端

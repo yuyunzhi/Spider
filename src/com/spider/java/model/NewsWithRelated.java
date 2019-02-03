@@ -22,6 +22,8 @@ public class NewsWithRelated extends News{
     public void display(){
         super.display();
         System.out.println("|Related|");
+        System.out.println("我被打印了，NewsWithRelated");
+
         for(Map.Entry<String,String> entry:this.related.entrySet()){
             System.out.println(entry.getKey());
             System.out.println(entry.getValue());

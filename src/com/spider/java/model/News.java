@@ -20,6 +20,7 @@ public class News implements Viewable {
 
     @Override
     public void display() {
+        System.out.println("我被打印了News");
         System.out.println("|Title| " + this.getTitle());
         System.out.println("|Content| " + this.getContent());
     }
