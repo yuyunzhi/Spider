@@ -1,5 +1,11 @@
 package com.spider.java;
 
+import com.spider.java.model.News;
+import com.spider.java.model.NewsFactory;
+import com.spider.java.view.NewsListViewer;
+
+import java.util.ArrayList;
+
 /**
  * 抓取这个网站的新闻
  * https://readhub.cn
@@ -13,7 +19,28 @@ public class Main {
     //2、设计 对象应该具有的属性，状态和行为
     //3、思考 对象之间交互
     //4、开始编码
-    public static void main(String[] args) {
-	// write your code here
+    public static void main(String[] args) throws Exception {
+
+        //获取所储存的文件路径
+        String resource_path= Main.class.getClassLoader().getResource("read_hub").getPath();
+
+        /**
+         * 创建类 NewsFactory
+         * 通过传入文件路径
+         * 找到文件，及读取所需要的文件内容
+         * 返回ArrayList
+         */
+        NewsFactory newsReader = new NewsFactory(resource_path);
+        ArrayList<News> newsList = newsReader.fetch();
+
+        /**
+         * 创建类NewsListViewer
+         * 拿到文件内容
+         * 进行输出到终端
+         */
+        NewsListViewer viewer = new NewsListViewer(newsList);
+        viewer.display();
+
+
     }
 }
