@@ -2,7 +2,8 @@ package com.spider.java;
 
 import com.spider.java.model.News;
 import com.spider.java.model.NewsFactory;
-import com.spider.java.view.NewsListViewer;
+import com.spider.java.model.Viewable;
+import com.spider.java.view.ListViewer;
 
 import java.util.ArrayList;
 
@@ -33,12 +34,15 @@ public class Main {
         NewsFactory newsReader = new NewsFactory(resource_path);
         ArrayList<News> newsList = newsReader.fetch();
 
+        ArrayList<Viewable> viewableList =new ArrayList<Viewable>();
+        viewableList.addAll(newsList);
+
         /**
          * 创建类NewsListViewer
          * 拿到文件内容
          * 进行输出到终端
          */
-        NewsListViewer viewer = new NewsListViewer(newsList);
+        ListViewer viewer = new ListViewer(viewableList);
         viewer.display();
 
 

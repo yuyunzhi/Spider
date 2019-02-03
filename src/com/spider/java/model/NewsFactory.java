@@ -7,49 +7,46 @@ import java.util.ArrayList;
  * 从路径中读取文件内容
  * 并返回一个数组集合，每个item是文件的内容
  */
-public class NewsFactory {
 
-    private File newsDir;
+public class NewsFactory {
+    protected File newsDir;
 
     public NewsFactory(String dir) throws Exception {
-        newsDir = new File(dir); //打开目录
-
-        //检查目录是否存在
-        if(!newsDir.exists()){
-            throw new Exception("路径不存在！");
+        newsDir = new File(dir); // 打开目录
+        if (!newsDir.exists()) {
+            throw new Exception("路径不存在!");
         }
-        //检查是否是目录
-        if(!newsDir.isDirectory()){
-            throw new Exception("请输入合法的目录");
+        if (!newsDir.isDirectory()) {
+            throw new Exception("输入路径不是一个合法目录！");
         }
     }
-        public ArrayList<News> fetch() {
-            ArrayList<News> newsList = new ArrayList<News>();
-            File[] files = newsDir.listFiles();
-            if (files != null) {
-                for (File file : files) {
-                    try {
-                        BufferedReader reader = new BufferedReader(new FileReader(file));
-                        String title = reader.readLine();//读取标题
-                        reader.readLine(); //空行
-                        String content = reader.readLine();//读取内容
-                        News news = new News(title, content);
-                        //读取相关新闻
-                        for(int i =0 ; i<3;i++){
-                            reader.readLine();//空行
-                            String date =  reader.readLine(); //日期
-                            String related_title =  reader.readLine(); //相关新闻标题
-                            news.addRelated(date,related_title);
-                        }
-                        newsList.add(news);
-                    } catch (IOException e) {
-                        System.out.println("新闻读取出错！");
-                    }
+
+    //调用fetch,获取该文件夹下所需要的文件里的内容，并报保存到ArrayList
+    public ArrayList<News> fetch() {
+        ArrayList<News> newsList = new ArrayList<News>();
+
+        File[] files = newsDir.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                //支持.txt .json格式
+                NewsReader newsReader = null;
+                if (file.getName().endsWith(".txt")) {
+                    newsReader = new TextNewsReader(file);
+                } else if (file.getName().endsWith(".json")) {
+                    newsReader = new JsonNewsReader(file);
                 }
+
+                News news = newsReader.readNews();
+                newsList.add(news);
             }
-            return newsList;
         }
 
+        //继承与News，多了一个日期和相关内容
+        NewsWithRelated newsWithRelated = new NewsWithRelated("", "Java、Java", "嗯，是java");
+        newsWithRelated.addRelated("4.11", "Java1！");
+        newsWithRelated.addRelated("4.17", "Java2！");
+        newsList.add(newsWithRelated);
 
-
+        return newsList;
+    }
 }
