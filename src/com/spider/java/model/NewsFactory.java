@@ -42,7 +42,7 @@ public class NewsFactory {
         }
 
         //继承于News，多了一个日期和相关内容
-        NewsWithRelated newsWithRelated = new NewsWithRelated("", "Java、Java", "嗯，是java");
+        NewsWithRelated newsWithRelated = new NewsWithRelated("Java、Java",  "嗯，是java");
         newsWithRelated.addRelated("4.11", "Java1！");
         newsWithRelated.addRelated("4.17", "Java2！");
         //add的是News的 子类
