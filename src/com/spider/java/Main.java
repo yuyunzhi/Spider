@@ -51,17 +51,38 @@ public class Main {
         NewsWithRelated startNews = UrlNewsReader.read(startUrl);//静态方法，直接使用类名调用。
         newsQueue.add(startNews);
 
+
+        ArrayList<String> allUrl = new ArrayList<>();
+        allUrl.add(startUrl);
+
         while(!newsQueue.isEmpty()){
-            Timer timer = new Timer();
+
             NewsWithRelated currentNews = newsQueue.poll();
-            currentNews.display();
+           //currentNews.display();
             for(Map.Entry<String,String> entry : currentNews.getRelated().entrySet()){
                 String url = entry.getValue();
-                NewsWithRelated next = UrlNewsReader.read(url);
-                newsQueue.add(next);
+                Boolean hasUrl = allUrl.contains(url);
+                System.out.println("--------------------");
+                System.out.println("所有的url");
+                System.out.println(allUrl);
+                System.out.println("当前的url");
+                System.out.println(url);
+                System.out.println("是否包含");
+                System.out.println(hasUrl);
+                if(hasUrl){
+                    continue;
+                }else{
+                    allUrl.add(url);
+                    NewsWithRelated next = UrlNewsReader.read(url);
+                    newsQueue.add(next);
+                }
+                //这里判断url，是否是重复的，如果重复，就跳过
+
 
             }
         }
+
+        System.out.println(allUrl.size());
 
 
         //广度优先实现去重
