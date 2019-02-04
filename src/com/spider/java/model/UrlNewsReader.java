@@ -15,7 +15,7 @@ public class UrlNewsReader {
         Document doc = Jsoup.connect(url).get();
         Elements titleElements = doc.select("title");
         String title = titleElements.first().text();
-        String content = doc.select("meta[name=description]").attr("content");
+        String content = doc.select("meta[property=og:description]").attr("content");
 
         // select 语法
         // 1. 标签名 "title", "meta", "meta"
@@ -27,15 +27,17 @@ public class UrlNewsReader {
         Elements contentElements = doc.select(".summary___1i4y3");
         String content = contentElements.first().text();
         */
+        Elements body = doc.select("body");
+        Elements div = body.select(".row___3h219");
 
         NewsWithRelated news = new NewsWithRelated(title, content);
 
-        Elements relatedElements = doc.select(".relatedEventsItem___2PNhz");
+        Elements relatedElements = doc.select(".row___3h219");
         for (Element element : relatedElements) {
-            String relatedTitle = element.select(".content-item___3KfMq").text();
             Elements children  = element.children();
-            String relatedUrl = children.get(3).child(0).absUrl("href");
-
+            String relatedTitle = children.get(0).text();
+            String relatedUrl = children.get(0).absUrl("href");
+            String date = children.get(1).text();
             news.addRelated(relatedTitle, relatedUrl);
         }
 

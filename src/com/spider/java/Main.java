@@ -1,12 +1,9 @@
 package com.spider.java;
 
-import com.spider.java.model.News;
-import com.spider.java.model.NewsFactory;
-import com.spider.java.model.UrlNewsReader;
-import com.spider.java.model.Viewable;
+import com.spider.java.model.*;
 import com.spider.java.view.ListViewer;
 
-import java.util.ArrayList;
+import java.util.*;
 
 /**
  * 抓取这个网站的新闻
@@ -47,8 +44,31 @@ public class Main {
         ListViewer viewer = new ListViewer(viewableList);
         viewer.display();*/
 
-        UrlNewsReader urlNewsReader = new UrlNewsReader();
-        News urlLists = UrlNewsReader.read("https://readhub.cn/topic/7JZSigNHilW");
-        urlLists.display();
+
+        //广度优先搜索方法
+        Queue<NewsWithRelated> newsQueue = new LinkedList<>();
+        String startUrl = "https://readhub.cn/topic/7K0i3s1eP84";
+        NewsWithRelated startNews = UrlNewsReader.read(startUrl);//静态方法，直接使用类名调用。
+        newsQueue.add(startNews);
+
+        while(!newsQueue.isEmpty()){
+            Timer timer = new Timer();
+            NewsWithRelated currentNews = newsQueue.poll();
+            currentNews.display();
+            for(Map.Entry<String,String> entry : currentNews.getRelated().entrySet()){
+                String url = entry.getValue();
+                NewsWithRelated next = UrlNewsReader.read(url);
+                newsQueue.add(next);
+
+            }
+        }
+
+
+        //广度优先实现去重
+        //保存到本地以Json的格式
+
+
+
+
     }
 }
